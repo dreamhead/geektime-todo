@@ -1,0 +1,4 @@
+rootProject.name = 'geektime-todo'
+
+include 'todo-cli'
+include 'todo-core'

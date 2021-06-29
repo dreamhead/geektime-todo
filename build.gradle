@@ -1,0 +1,89 @@
+buildscript {
+    dependencies {
+        classpath "mysql:mysql-connector-java:$mysqlVersion"
+    }
+}
+
+plugins {
+    id "org.flywaydb.flyway" version "${flywayVersion}"
+}
+
+subprojects {
+    apply plugin: 'java'
+
+    group = 'com.github.dreamhead.todo'
+    version = new Date().format('yyyyMMdd') + '-SNAPSHOT'
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+        options.compilerArgs << "-Xlint:unchecked"
+        options.compilerArgs << "-Xlint:deprecation"
+    }
+
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.maven.apache.org/maven2" }
+    }
+
+    dependencies {
+        implementation("com.google.guava:guava:$guavaVersion")
+        implementation("org.springframework.boot:spring-boot-starter:$springBootVersion")
+        implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+        implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
+
+        compileOnly("org.projectlombok:lombok:$lombokVersion")
+        annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+
+        runtimeOnly("mysql:mysql-connector-java:$mysqlVersion")
+
+        testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+        testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+        testImplementation("org.assertj:assertj-core:$assertJVersion")
+        testImplementation("org.mockito:mockito-core:$mockitoVersion")
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    apply from: "$rootDir/gradle/config/scripts/style.gradle"
+    apply from: "$rootDir/gradle/config/scripts/coverage.gradle"
+
+    coverage.excludePackages = [
+    ]
+
+    coverage.excludeClasses = [
+    ]
+
+    style.excludePackages = [
+    ]
+
+    style.excludeClasses = [
+    ]
+}
+
+configure(subprojects - project(':todo-cli')) {
+    project(':todo-cli').dependencies {
+        implementation(project)
+    }
+}
+
+allprojects {
+    apply plugin: 'idea'
+}
+
+apply from: "$rootDir/gradle/config/scripts/idea.gradle"
+
+flyway {
+    url = 'jdbc:mysql://localhost:3306/zero_test?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true'
+    user = 'zero'
+    password = 'geektime'
+    locations = ["filesystem:$rootDir/gradle/config/migration"]
+}
+
+wrapper {
+    gradleVersion = '7.1'
+}

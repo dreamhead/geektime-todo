@@ -1,0 +1,17 @@
+apply plugin: 'idea'
+
+idea {
+    project {
+        jdkName = JavaVersion.VERSION_11
+        languageLevel = JavaVersion.VERSION_11
+
+        vcs = "Git"
+    }
+
+    workspace.iws.withXml { provider ->
+        def junitDefaults = provider.node.component.find { it.@name == 'RunManager' }.configuration.find {
+            it.@type == 'JUnit'
+        }
+        junitDefaults.option.find { it.@name == 'WORKING_DIRECTORY' }.@value = '$MODULE_DIR$'
+    }
+}

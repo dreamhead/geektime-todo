@@ -1,0 +1,32 @@
+plugins {
+    id 'org.springframework.boot' version "${springBootVersion}"
+}
+
+style {
+    excludePackages = [
+    ]
+    excludeClasses = [
+            "com.github.dreamhead.zero.bootstrap.Bootstrap"
+    ]
+}
+
+coverage {
+    excludePackages = [
+    ]
+    excludeClasses = [
+            "com.github.dreamhead.zero.bootstrap.Bootstrap"
+    ]
+}
+
+springBoot {
+    mainClassName = 'com.github.dreamhead.zero.bootstrap.Bootstrap'
+}
+
+bootJar {
+    classifier = 'boot'
+
+    // https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-1.4-Release-Notes#jersey-classpath-scanning-limitations
+    requiresUnpack '**/zero-*.jar'
+
+    launchScript()
+}
