@@ -6,7 +6,7 @@ style {
     excludePackages = [
     ]
     excludeClasses = [
-            "com.github.dreamhead.zero.bootstrap.Bootstrap"
+            "com.github.dreamhead.todo.bootstrap.Bootstrap"
     ]
 }
 

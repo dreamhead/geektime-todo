@@ -4,9 +4,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @EqualsAndHashCode
+@Getter
 public class TodoItem {
-    @Getter
-    private String content;
+    private final String content;
 
     public TodoItem(final String content) {
         this.content = content;
