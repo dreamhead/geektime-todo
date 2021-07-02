@@ -1,8 +1,11 @@
 package com.github.dreamhead.todo.core;
 
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Streams;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class TodoItemService {
     private final TodoRepository repository;
@@ -34,5 +37,13 @@ public class TodoItemService {
         } catch (Exception e) {
             return Optional.empty();
         }
+    }
+
+    public List<IndexedTodoItem> list(final boolean all) {
+        return Streams.mapWithIndex(
+                Streams.stream(this.repository.findAll()),
+                (item, index) -> new IndexedTodoItem((int) index, item))
+                .filter(item -> all || !item.isDone())
+                .collect(Collectors.toList());
     }
 }

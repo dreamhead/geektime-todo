@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -61,5 +62,50 @@ public class TodoItemServiceTest {
         when(repository.findAll()).thenReturn(ImmutableList.of(new TodoItem("foo")));
         final Optional<TodoItem> todoItem = service.markTodoItemDone(2);
         assertThat(todoItem).isEmpty();
+    }
+
+    @Test
+    public void should_list_all() {
+        when(repository.findAll()).thenReturn(ImmutableList.of(new TodoItem("foo")));
+
+        List<IndexedTodoItem> items = service.list(true);
+        assertThat(items).hasSize(1);
+        final IndexedTodoItem item = items.get(0);
+        assertThat(item.getIndex()).isEqualTo(0);
+        assertThat(item.getContent()).isEqualTo("foo");
+    }
+
+    @Test
+    public void should_not_list_without_item() {
+        when(repository.findAll()).thenReturn(ImmutableList.of());
+
+        List<IndexedTodoItem> items = service.list(true);
+        assertThat(items).hasSize(0);
+    }
+
+    @Test
+    public void should_list_all_without_done() {
+        final TodoItem doneItem = new TodoItem("foo");
+        doneItem.markDone();
+        final TodoItem regularItem = new TodoItem("bar");
+
+        when(repository.findAll()).thenReturn(ImmutableList.of(doneItem, regularItem));
+
+        List<IndexedTodoItem> items = service.list(false);
+        assertThat(items).hasSize(1);
+        final IndexedTodoItem item = items.get(0);
+        assertThat(item.getIndex()).isEqualTo(1);
+        assertThat(item.getContent()).isEqualTo("bar");
+    }
+
+    @Test
+    public void should_not_list_without_done_item() {
+        final TodoItem doneItem = new TodoItem("foo");
+        doneItem.markDone();
+
+        when(repository.findAll()).thenReturn(ImmutableList.of(doneItem));
+
+        List<IndexedTodoItem> items = service.list(false);
+        assertThat(items).hasSize(0);
     }
 }
