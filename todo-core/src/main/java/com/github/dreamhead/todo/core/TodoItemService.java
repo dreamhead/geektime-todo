@@ -35,10 +35,8 @@ public class TodoItemService {
         }
     }
 
-    public List<IndexedTodoItem> list(final boolean all) {
-        return Streams.mapWithIndex(
-                Streams.stream(this.repository.findAll()),
-                (item, index) -> new IndexedTodoItem((int) index, item))
+    public List<TodoItem> list(final boolean all) {
+        return Streams.stream(this.repository.findAll())
                 .filter(item -> all || !item.isDone())
                 .collect(Collectors.toList());
     }

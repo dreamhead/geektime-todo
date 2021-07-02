@@ -58,46 +58,51 @@ public class TodoItemServiceTest {
 
     @Test
     public void should_list_all() {
-        when(repository.findAll()).thenReturn(ImmutableList.of(new TodoItem("foo")));
+        final TodoItem item = new TodoItem("foo");
+        item.assignIndex(1);
+        when(repository.findAll()).thenReturn(ImmutableList.of(item));
 
-        List<IndexedTodoItem> items = service.list(true);
+        List<TodoItem> items = service.list(true);
         assertThat(items).hasSize(1);
-        final IndexedTodoItem item = items.get(0);
-        assertThat(item.getIndex()).isEqualTo(0);
-        assertThat(item.getContent()).isEqualTo("foo");
+        final TodoItem result = items.get(0);
+        assertThat(result.getIndex()).isEqualTo(1);
+        assertThat(result.getContent()).isEqualTo("foo");
     }
 
     @Test
     public void should_not_list_without_item() {
         when(repository.findAll()).thenReturn(ImmutableList.of());
 
-        List<IndexedTodoItem> items = service.list(true);
+        List<TodoItem> items = service.list(true);
         assertThat(items).hasSize(0);
     }
 
     @Test
     public void should_list_all_without_done() {
         final TodoItem doneItem = new TodoItem("foo");
+        doneItem.assignIndex(1);
         doneItem.markDone();
         final TodoItem regularItem = new TodoItem("bar");
+        regularItem.assignIndex(2);
 
         when(repository.findAll()).thenReturn(ImmutableList.of(doneItem, regularItem));
 
-        List<IndexedTodoItem> items = service.list(false);
+        List<TodoItem> items = service.list(false);
         assertThat(items).hasSize(1);
-        final IndexedTodoItem item = items.get(0);
-        assertThat(item.getIndex()).isEqualTo(1);
+        final TodoItem item = items.get(0);
+        assertThat(item.getIndex()).isEqualTo(2);
         assertThat(item.getContent()).isEqualTo("bar");
     }
 
     @Test
     public void should_not_list_without_done_item() {
         final TodoItem doneItem = new TodoItem("foo");
+        doneItem.assignIndex(1);
         doneItem.markDone();
 
         when(repository.findAll()).thenReturn(ImmutableList.of(doneItem));
 
-        List<IndexedTodoItem> items = service.list(false);
+        List<TodoItem> items = service.list(false);
         assertThat(items).hasSize(0);
     }
 }
