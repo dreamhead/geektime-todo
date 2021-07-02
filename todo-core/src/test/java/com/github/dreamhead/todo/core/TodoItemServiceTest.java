@@ -16,11 +16,11 @@ import static org.mockito.Mockito.when;
 
 public class TodoItemServiceTest {
     private TodoItemService service;
-    private TodoRepository repository;
+    private TodoItemRepository repository;
 
     @BeforeEach
     public void setUp() {
-        this.repository = mock(TodoRepository.class);
+        this.repository = mock(TodoItemRepository.class);
         this.service = new TodoItemService(this.repository);
     }
 

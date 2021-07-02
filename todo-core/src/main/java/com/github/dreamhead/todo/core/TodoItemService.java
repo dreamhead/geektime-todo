@@ -8,9 +8,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class TodoItemService {
-    private final TodoRepository repository;
+    private final TodoItemRepository repository;
 
-    public TodoItemService(final TodoRepository repository) {
+    public TodoItemService(final TodoItemRepository repository) {
         this.repository = repository;
     }
 
