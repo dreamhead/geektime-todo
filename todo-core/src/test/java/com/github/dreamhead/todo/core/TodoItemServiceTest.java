@@ -27,7 +27,7 @@ public class TodoItemServiceTest {
     @Test
     public void should_add_todo_item() {
         when(repository.save(any())).then(returnsFirstArg());
-        TodoItem item = service.addTodoItem(new TodoParameter("foo"));
+        TodoItem item = service.addTodoItem(TodoParameter.of("foo"));
         assertThat(item.getContent()).isEqualTo("foo");
     }
 
@@ -42,7 +42,7 @@ public class TodoItemServiceTest {
         when(repository.findAll()).thenReturn(ImmutableList.of(new TodoItem("foo")));
         when(repository.save(any())).then(returnsFirstArg());
 
-        final Optional<TodoItem> todoItem = service.markTodoItemDone(1);
+        final Optional<TodoItem> todoItem = service.markTodoItemDone(TodoIndexParameter.of(1));
 
         assertThat(todoItem).isPresent();
         final TodoItem actual = todoItem.get();
@@ -50,17 +50,9 @@ public class TodoItemServiceTest {
     }
 
     @Test
-    public void should_not_mark_todo_item_for_negative_index() {
-        assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> service.markTodoItemDone(-1));
-        assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> service.markTodoItemDone(0));
-    }
-
-    @Test
     public void should_not_mark_todo_item_for_out_of_scope_index() {
         when(repository.findAll()).thenReturn(ImmutableList.of(new TodoItem("foo")));
-        final Optional<TodoItem> todoItem = service.markTodoItemDone(2);
+        final Optional<TodoItem> todoItem = service.markTodoItemDone(TodoIndexParameter.of(2));
         assertThat(todoItem).isEmpty();
     }
 

@@ -23,15 +23,11 @@ public class TodoItemService {
         return this.repository.save(item);
     }
 
-    public Optional<TodoItem> markTodoItemDone(final int index) {
-        if (index <= 0) {
-            throw new IllegalArgumentException("Index should be greater than 0");
-        }
-
+    public Optional<TodoItem> markTodoItemDone(final TodoIndexParameter index) {
         final Iterable<TodoItem> all = this.repository.findAll();
 
         try {
-            final TodoItem todoItem = Iterables.get(all, index - 1);
+            final TodoItem todoItem = Iterables.get(all, index.getIndex() - 1);
             todoItem.markDone();
             return Optional.of(this.repository.save(todoItem));
         } catch (Exception e) {
