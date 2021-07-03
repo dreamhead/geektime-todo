@@ -14,8 +14,13 @@ coverage {
     excludePackages = [
     ]
     excludeClasses = [
-            "com.github.dreamhead.zero.bootstrap.Bootstrap"
+            "com.github.dreamhead.todo.bootstrap.Bootstrap",
+            "com.github.dreamhead.todo.util.Jsons"
     ]
+}
+
+dependencies {
+    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
 }
 
 springBoot {
