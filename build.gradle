@@ -29,14 +29,15 @@ subprojects {
 
     dependencies {
         implementation("com.google.guava:guava:$guavaVersion")
-        implementation("org.springframework.boot:spring-boot-starter:$springBootVersion")
-        implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
-        implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
+//        implementation("org.springframework.boot:spring-boot-starter:$springBootVersion")
+//        implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+//        implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
 
         compileOnly("org.projectlombok:lombok:$lombokVersion")
         annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+        implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
 
-        runtimeOnly("mysql:mysql-connector-java:$mysqlVersion")
+//        runtimeOnly("mysql:mysql-connector-java:$mysqlVersion")
 
         testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
         testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")

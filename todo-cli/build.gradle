@@ -20,7 +20,7 @@ coverage {
 }
 
 dependencies {
-    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
+    implementation("info.picocli:picocli:$picocliVersion")
 }
 
 springBoot {

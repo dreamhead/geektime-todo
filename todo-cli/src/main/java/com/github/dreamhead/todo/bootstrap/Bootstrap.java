@@ -1,23 +1,24 @@
 package com.github.dreamhead.todo.bootstrap;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import com.github.dreamhead.todo.cli.ObjectFactory;
+import picocli.CommandLine;
 
-@SpringBootApplication
-@ComponentScan({
-        "com.github.dreamhead.zero"
-})
-@EnableJpaRepositories({
-        "com.github.dreamhead.todo"
-})
-@EntityScan({
-        "com.github.dreamhead.todo"
-})
+import java.io.File;
+
 public class Bootstrap {
     public static void main(final String[] args) {
-        SpringApplication.run(Bootstrap.class, args);
+        final File todoRepository = new File(todoHome(), "repository.json");
+        ObjectFactory factory = new ObjectFactory();
+        final CommandLine commandLine = factory.createCommandLine(todoRepository);
+        commandLine.execute(args);
+    }
+
+    private static File todoHome() {
+        final File homeDirectory = new File(System.getProperty("user.home"));
+        final File todoHome = new File(homeDirectory, ".todo");
+        if (!todoHome.exists()) {
+            todoHome.mkdirs();
+        }
+        return todoHome;
     }
 }
