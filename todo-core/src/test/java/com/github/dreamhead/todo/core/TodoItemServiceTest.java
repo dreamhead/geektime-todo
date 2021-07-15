@@ -12,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class TodoItemServiceTest {
@@ -29,6 +30,8 @@ public class TodoItemServiceTest {
         when(repository.save(any())).then(returnsFirstArg());
         TodoItem item = service.addTodoItem(TodoParameter.of("foo"));
         assertThat(item.getContent()).isEqualTo("foo");
+
+        verify(repository).save(any());
     }
 
     @Test

@@ -53,7 +53,10 @@ task coverageCheck(dependsOn: test) {
                 rule(element: 'PACKAGE') {
                     limit(counter: "LINE", value: "COVEREDRATIO", minimum: "1.0")
                     limit(counter: "CLASS", value: "COVEREDRATIO", minimum: "1.0")
-
+                    limit(counter: "INSTRUCTION", value: "COVEREDRATIO", minimum: "1.0")
+                    limit(counter: "BRANCH", value: "COVEREDRATIO", minimum: "1.0")
+                    limit(counter: "COMPLEXITY", value: "COVEREDRATIO", minimum: "1.0")
+                    limit(counter: "METHOD", value: "COVEREDRATIO", minimum: "1.0")
                 }
             }
         }
