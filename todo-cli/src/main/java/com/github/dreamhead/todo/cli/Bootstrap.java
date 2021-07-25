@@ -1,6 +1,5 @@
-package com.github.dreamhead.todo.bootstrap;
+package com.github.dreamhead.todo.cli;
 
-import com.github.dreamhead.todo.cli.ObjectFactory;
 import picocli.CommandLine;
 
 import java.io.File;

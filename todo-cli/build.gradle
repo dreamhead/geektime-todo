@@ -1,12 +1,8 @@
-plugins {
-    id 'org.springframework.boot' version "${springBootVersion}"
-}
-
 style {
     excludePackages = [
     ]
     excludeClasses = [
-            "com.github.dreamhead.todo.bootstrap.Bootstrap"
+            "com.github.dreamhead.todo.cli.Bootstrap"
     ]
 }
 
@@ -14,24 +10,12 @@ coverage {
     excludePackages = [
     ]
     excludeClasses = [
-            "com.github.dreamhead.todo.bootstrap.Bootstrap",
+            "com.github.dreamhead.todo.cli.Bootstrap",
             "com.github.dreamhead.todo.util.Jsons"
     ]
 }
 
-dependencies {
+project.dependencies {
     implementation("info.picocli:picocli:$picocliVersion")
-}
-
-springBoot {
-    mainClassName = 'com.github.dreamhead.zero.bootstrap.Bootstrap'
-}
-
-bootJar {
-    classifier = 'boot'
-
-    // https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-1.4-Release-Notes#jersey-classpath-scanning-limitations
-    requiresUnpack '**/zero-*.jar'
-
-    launchScript()
+    implementation(project(':todo-core'))
 }
