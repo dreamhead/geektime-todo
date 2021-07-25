@@ -1,0 +1,54 @@
+buildscript {
+    dependencies {
+        classpath "mysql:mysql-connector-java:$mysqlVersion"
+    }
+}
+
+plugins {
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id "org.flywaydb.flyway" version "${flywayVersion}"
+}
+
+style {
+    excludePackages = [
+    ]
+    excludeClasses = [
+            "com.github.dreamhead.todo.api.Bootstrap"
+    ]
+}
+
+coverage {
+    excludePackages = [
+    ]
+    excludeClasses = [
+            "com.github.dreamhead.todo.api.Bootstrap"
+    ]
+}
+
+dependencies {
+    implementation(project(":todo-core"))
+    implementation("org.springframework.boot:spring-boot-starter:$springBootVersion")
+    implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
+    runtimeOnly("mysql:mysql-connector-java:$mysqlVersion")
+}
+
+flyway {
+    url = 'jdbc:mysql://localhost:3306/zero_test?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true'
+    user = 'zero'
+    password = 'geektime'
+    locations = ["filesystem:$rootDir/gradle/config/migration"]
+}
+
+springBoot {
+    mainClassName = 'com.github.dreamhead.todo.api.Bootstrap'
+}
+
+bootJar {
+    classifier = 'boot'
+
+    // https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-1.4-Release-Notes#jersey-classpath-scanning-limitations
+    requiresUnpack '**/zero-*.jar'
+
+    launchScript()
+}
