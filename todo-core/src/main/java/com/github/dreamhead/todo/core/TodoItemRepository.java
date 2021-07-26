@@ -1,6 +1,8 @@
 package com.github.dreamhead.todo.core;
 
-public interface TodoItemRepository {
+import org.springframework.data.repository.Repository;
+
+public interface TodoItemRepository extends Repository<TodoItem, Long> {
     TodoItem save(TodoItem item);
 
     Iterable<TodoItem> findAll();

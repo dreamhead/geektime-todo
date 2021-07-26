@@ -1,31 +1,28 @@
-package com.github.dreamhead.todo.cli.file;
+package com.github.dreamhead.todo.api;
 
 import com.github.dreamhead.todo.core.TodoItem;
+import com.github.dreamhead.todo.core.TodoItemRepository;
 import com.google.common.collect.Iterables;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
-
-import java.io.File;
-import java.io.IOException;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-class FileTodoItemRepositoryTest {
-    @TempDir
-    File tempDir;
-    private File tempFile;
-    private FileTodoItemRepository repository;
-
-    @BeforeEach
-    void setUp() throws IOException {
-        this.tempFile = File.createTempFile("file", "", tempDir);
-        this.repository = new FileTodoItemRepository(this.tempFile);
-    }
+@ExtendWith(SpringExtension.class)
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+public class TodoItemRepositoryTest {
+    @Autowired
+    private TodoItemRepository repository;
 
     @Test
-    public void should_find_nothing_for_empty_repository() throws IOException {
+    public void should_find_nothing_for_empty_repository() {
         final Iterable<TodoItem> items = repository.findAll();
         assertThat(items).hasSize(0);
     }
@@ -38,10 +35,9 @@ class FileTodoItemRepositoryTest {
         assertThat(items).hasSize(2);
         final TodoItem firstItem = Iterables.get(items, 0);
         assertThat(firstItem.getContent()).isEqualTo("foo");
-        assertThat(firstItem.getIndex()).isEqualTo(1);
         final TodoItem secondItem = Iterables.get(items, 1);
         assertThat(secondItem.getContent()).isEqualTo("bar");
-        assertThat(secondItem.getIndex()).isEqualTo(2);
+        assertThat(secondItem.getIndex()).isEqualTo(firstItem.getIndex() + 1);
     }
 
     @Test
@@ -61,7 +57,7 @@ class FileTodoItemRepositoryTest {
 
     @Test
     public void should_not_save_null_todo_item() {
-        assertThatExceptionOfType(IllegalArgumentException.class)
+        assertThatExceptionOfType(InvalidDataAccessApiUsageException.class)
                 .isThrownBy(() -> repository.save(null));
     }
 }
