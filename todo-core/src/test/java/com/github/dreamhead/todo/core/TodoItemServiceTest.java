@@ -42,7 +42,9 @@ public class TodoItemServiceTest {
 
     @Test
     public void should_mark_todo_item_as_done() {
-        when(repository.findAll()).thenReturn(ImmutableList.of(new TodoItem("foo")));
+        final TodoItem foo = new TodoItem("foo");
+        foo.assignIndex(1);
+        when(repository.findAll()).thenReturn(ImmutableList.of(foo));
         when(repository.save(any())).then(returnsFirstArg());
 
         final Optional<TodoItem> todoItem = service.markTodoItemDone(TodoIndexParameter.of(1));

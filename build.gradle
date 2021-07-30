@@ -23,6 +23,7 @@ subprojects {
         annotationProcessor("org.projectlombok:lombok:$lombokVersion")
         implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
         implementation("jakarta.persistence:jakarta.persistence-api:$persistenceVersion")
+        implementation("org.springframework:spring-context:$springVersion")
         implementation("org.springframework.data:spring-data-commons:$springBootVersion")
 
         testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
