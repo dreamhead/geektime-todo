@@ -58,7 +58,17 @@ public class TodoItemResourceTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/todo-items")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(todoItem))
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void should_fail_to_add_unknown_request() throws Exception {
+        String todoItem = "";
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/todo-items")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(todoItem))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -111,6 +121,16 @@ public class TodoItemResourceTest {
         String done = "{ \"done\": false }";
 
         mockMvc.perform(MockMvcRequestBuilders.put("/todo-items/" + (Integer.MAX_VALUE - 1))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(done))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void should_fail_to_mark_with_unknown_request() throws Exception {
+        String done = "";
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/todo-items/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(done))
                 .andExpect(status().isBadRequest());
