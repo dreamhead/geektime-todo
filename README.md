@@ -36,3 +36,9 @@
 ```shell
 ./gradlew uberJar
 ```
+
+在 todo-cli/build/libs 下就会生成一个 Uber JAR，它是可以独立运行的。
+
+```shell
+java -jar todo-uber-<version>.jar
+```
