@@ -30,8 +30,9 @@
 ./gradlew build
 ```
 
-* 运行应用
+* 生成发布包
 
+对于 CLI 项目，运行如下命令
 ```shell
-./gradlew bootRun
+./gradlew uberJar
 ```
