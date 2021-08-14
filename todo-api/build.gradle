@@ -1,3 +1,5 @@
+import org.flywaydb.gradle.task.*
+
 buildscript {
     dependencies {
         classpath "mysql:mysql-connector-java:$mysqlVersion"
@@ -34,12 +36,24 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
 }
 
-flyway {
+task migrateToDev(type: FlywayMigrateTask) {
+    url = 'jdbc:mysql://localhost:3306/todo_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true'
+    user = 'todo'
+    password = 'geektime'
+    locations = ["filesystem:$rootDir/gradle/config/migration"]
+}
+
+task migrateToTest(type: FlywayMigrateTask) {
     url = 'jdbc:mysql://localhost:3306/todo_test?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true'
     user = 'todo'
     password = 'geektime'
     locations = ["filesystem:$rootDir/gradle/config/migration"]
 }
+
+task migrate {
+}
+
+migrate.dependsOn migrateToDev, migrateToTest
 
 springBoot {
     mainClassName = 'com.github.dreamhead.todo.api.Bootstrap'
