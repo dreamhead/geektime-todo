@@ -21,7 +21,7 @@
 * 数据库迁移
 
 ```shell
-./gradlew flywayMigrate
+./gradlew migrate
 ```
 
 * 生成构建产物
