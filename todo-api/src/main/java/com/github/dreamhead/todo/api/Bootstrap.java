@@ -11,6 +11,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ComponentScan("com.github.dreamhead.todo")
 public class Bootstrap {
     public static void main(final String[] args) {
-
+        SpringApplication.run(Bootstrap.class, args);   
     }
 }
