@@ -60,7 +60,18 @@ public class TodoItemResourceTest {
                         .content(todoItem))
                 .andExpect(status().isBadRequest());
     }
+    @Test
+    public void should_fail_to_add_repeat_item() throws Exception {
+        final TodoItem existedItem = repository.save(new TodoItem("foo"));
+        String todoItem = "{ " +
+                "\"content\": \"foo\"" +
+                "}";
 
+        mockMvc.perform(MockMvcRequestBuilders.post("/todo-items")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(todoItem))
+                .andExpect(status().isBadRequest());
+    }
     @Test
     public void should_fail_to_add_unknown_request() throws Exception {
         String todoItem = "";
