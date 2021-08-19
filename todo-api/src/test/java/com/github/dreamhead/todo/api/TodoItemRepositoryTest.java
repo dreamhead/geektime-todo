@@ -12,6 +12,8 @@ import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
@@ -40,6 +42,15 @@ public class TodoItemRepositoryTest {
         final TodoItem secondItem = Iterables.get(items, 1);
         assertThat(secondItem.getContent()).isEqualTo("bar");
         assertThat(secondItem.getIndex()).isEqualTo(firstItem.getIndex() + 1);
+    }
+
+    @Test
+    public void should_find_saved_content_item(){
+        repository.save(new TodoItem("foo"));
+        final Optional<TodoItem> todoItemSaved = repository.findByContent("foo");
+        assertThat(todoItemSaved).isPresent();
+        final Optional<TodoItem> todoItemNotExisted = repository.findByContent("bar");
+        assertThat(todoItemNotExisted).isNotPresent();
     }
 
     @Test
