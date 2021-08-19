@@ -8,6 +8,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -42,6 +43,15 @@ class FileTodoItemRepositoryTest {
         final TodoItem secondItem = Iterables.get(items, 1);
         assertThat(secondItem.getContent()).isEqualTo("bar");
         assertThat(secondItem.getIndex()).isEqualTo(2);
+    }
+
+    @Test
+    public void should_find_saved_content_item(){
+        repository.save(new TodoItem("foo"));
+        final Optional<TodoItem> todoItemSaved = repository.findByContent("foo");
+        assertThat(todoItemSaved).isPresent();
+        final Optional<TodoItem> todoItemNotExisted = repository.findByContent("bar");
+        assertThat(todoItemNotExisted).isNotPresent();
     }
 
     @Test

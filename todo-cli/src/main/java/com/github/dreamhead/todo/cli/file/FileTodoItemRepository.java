@@ -9,6 +9,7 @@ import com.google.common.collect.Iterables;
 import java.io.File;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class FileTodoItemRepository implements TodoItemRepository {
@@ -65,7 +66,8 @@ public class FileTodoItemRepository implements TodoItemRepository {
 
     @Override
     public Optional<TodoItem> findByContent(final String content) {
-        throw new UnsupportedOperationException();
+        return StreamSupport.stream(findAll().spliterator(), false)
+                .filter(i -> i.getContent().equals(content)).findFirst();
     }
 
 }
