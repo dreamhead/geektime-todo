@@ -22,7 +22,10 @@ public class TodoItemService {
         if (todoParameter == null) {
             throw new IllegalArgumentException("Null or empty content is not allowed");
         }
-
+        Optional<TodoItem> existedTodoItem = repository.findByContent(todoParameter.getContent());
+        if (existedTodoItem.isPresent()) {
+            throw new IllegalArgumentException("Existed content is not allowed");
+        }
         final TodoItem item = new TodoItem(todoParameter.getContent());
         return this.repository.save(item);
     }

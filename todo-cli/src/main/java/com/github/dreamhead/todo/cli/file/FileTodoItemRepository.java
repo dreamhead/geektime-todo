@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
 import java.io.File;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -60,6 +61,11 @@ public class FileTodoItemRepository implements TodoItemRepository {
         }
 
         return Jsons.toObjects(this.file);
+    }
+
+    @Override
+    public Optional<TodoItem> findByContent(final String content) {
+        throw new UnsupportedOperationException();
     }
 
 }

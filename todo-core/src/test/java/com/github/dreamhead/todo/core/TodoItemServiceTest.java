@@ -41,6 +41,16 @@ public class TodoItemServiceTest {
     }
 
     @Test
+    public void should_throw_exception_for_repeat_todo_item() {
+        when(repository.save(any())).then(returnsFirstArg());
+        TodoParameter foo = TodoParameter.of("foo");
+        TodoItem itemExist = service.addTodoItem(foo);
+        when(repository.findByContent(foo.getContent())).thenReturn(Optional.ofNullable(itemExist));
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> service.addTodoItem(foo));
+    }
+
+    @Test
     public void should_mark_todo_item_as_done() {
         final TodoItem foo = new TodoItem("foo");
         foo.assignIndex(1);
