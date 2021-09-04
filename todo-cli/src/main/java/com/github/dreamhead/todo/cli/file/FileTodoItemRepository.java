@@ -61,5 +61,4 @@ public class FileTodoItemRepository implements TodoItemRepository {
 
         return Jsons.toObjects(this.file);
     }
-
 }
