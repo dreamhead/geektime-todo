@@ -35,7 +35,7 @@ public class TodoItemStepDefinitions extends SpringIntegrationTest implements En
                 addTodoItem(content)
         );
 
-        When("list todo item", () -> {
+        When("list todo items", () -> {
             responses = listTodoItems();
         });
 
@@ -60,7 +60,7 @@ public class TodoItemStepDefinitions extends SpringIntegrationTest implements En
         return restTemplate.getForObject("http://localhost:8080/todo-items", TodoItemResponse[].class);
     }
 
-    private void addTodoItem(String content) {
+    private void addTodoItem(final String content) {
         AddTodoItemRequest request = new AddTodoItemRequest(content);
         final ResponseEntity<String> entity =
                 restTemplate.postForEntity("http://localhost:8080/todo-items", request, String.class);
