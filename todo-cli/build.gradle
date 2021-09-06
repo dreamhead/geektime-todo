@@ -19,7 +19,7 @@ task uberJar(type: Jar) {
     manifest {
         attributes 'Main-Class': 'com.github.dreamhead.todo.cli.Bootstrap'
     }
-    baseName = 'todo-uber'
+    archiveBaseName = 'todo-uber'
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
