@@ -60,5 +60,5 @@ allprojects {
 apply from: "$rootDir/gradle/config/scripts/idea.gradle"
 
 wrapper {
-    gradleVersion = '7.1'
+    gradleVersion = '7.2'
 }
