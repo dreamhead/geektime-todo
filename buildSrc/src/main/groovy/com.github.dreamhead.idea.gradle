@@ -1,9 +1,11 @@
-apply plugin: 'idea'
+plugins {
+    id 'idea'
+}
 
 idea {
     project {
-        jdkName = JavaVersion.VERSION_11
-        languageLevel = JavaVersion.VERSION_11
+        jdkName = JavaVersion.VERSION_1_8
+        languageLevel = JavaVersion.VERSION_1_8
 
         vcs = "Git"
     }

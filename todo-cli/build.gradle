@@ -1,3 +1,9 @@
+plugins {
+    id 'com.github.dreamhead.todo'
+    id 'com.github.dreamhead.style'
+    id 'com.github.dreamhead.coverage'
+}
+
 style {
     excludePackages = [
     ]

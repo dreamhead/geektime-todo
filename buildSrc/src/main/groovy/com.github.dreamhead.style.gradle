@@ -1,11 +1,14 @@
+plugins {
+    id 'checkstyle'
+}
+
+
 class StyleExtension {
     List<String> excludePackages;
     List<String> excludeClasses;
 }
 
 project.extensions.create('style', StyleExtension)
-
-apply plugin: 'checkstyle'
 
 checkstyle {
     configFile = file("$rootDir/gradle/config/checkstyle/sun_checks.xml")
