@@ -10,8 +10,6 @@ plugins {
     id 'org.springframework.boot' version "${springBootVersion}"
     id "org.flywaydb.flyway" version "${flywayVersion}"
     id 'com.github.dreamhead.todo'
-    id 'com.github.dreamhead.style'
-    id 'com.github.dreamhead.coverage'
 }
 
 style {

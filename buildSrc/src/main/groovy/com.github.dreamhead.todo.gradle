@@ -2,6 +2,8 @@ plugins {
     id 'java'
     id 'maven-publish'
     id 'idea'
+    id 'com.github.dreamhead.style'
+    id 'com.github.dreamhead.coverage'
 }
 
 repositories {
