@@ -78,7 +78,7 @@ task migrate {
 migrate.dependsOn migrateToDev, migrateToTest
 
 springBoot {
-    mainClassName = 'com.github.dreamhead.todo.api.Bootstrap'
+    mainClass = 'com.github.dreamhead.todo.api.Bootstrap'
 }
 
 bootJar {
