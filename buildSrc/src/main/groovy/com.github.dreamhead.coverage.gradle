@@ -2,67 +2,66 @@ plugins {
     id 'jacoco'
 }
 
-class CoverageExtension {
+class JacocoExtension {
     boolean enabled = true
     List<String> excludePackages;
     List<String> excludeClasses;
 }
 
-project.extensions.create('coverage', CoverageExtension)
+project.extensions.create('coverage', JacocoExtension)
+
+test.finalizedBy jacocoTestReport
+jacocoTestReport.dependsOn test
+check.dependsOn jacocoTestCoverageVerification
 
 jacoco.toolVersion = jacocoVersion
 
-task coverageCheck(dependsOn: test) {
-    doLast {
-        if (!coverage.enabled) {
-            return
-        }
-
-        if (!file("$buildDir/classes/java/test").exists()) {
-            return
-        }
-
-        ant.taskdef(name: 'jacocoReport',
-                classname: 'org.jacoco.ant.ReportTask',
-                classpath: configurations.jacocoAnt.asPath)
-
-        ant.jacocoReport {
-            executiondata {
-                fileset(dir: "$buildDir/jacoco") {
-                    include name: 'test.exec'
-                }
-            }
-
-            structure(name: project.name) {
-                classfiles {
-                    fileset(dir: "$buildDir/classes/java/main") {
-                        coverage.excludePackages.each() {
-                            exclude name: "${it.replaceAll('\\.', '/') + '/*'}"
-                        }
-                        coverage.excludeClasses.each() {
-                            exclude name: "${it.replaceAll('\\.', '/') + '.class'}"
-                        }
-                    }
-                }
-                sourcefiles {
-                    fileset dir: "src/main/java"
-                }
-            }
-
-            html(destdir: "$buildDir/reports/jacoco")
-
-            check(failOnViolation: true) {
-                rule(element: 'PACKAGE') {
-                    limit(counter: "LINE", value: "COVEREDRATIO", minimum: "1.0")
-                    limit(counter: "CLASS", value: "COVEREDRATIO", minimum: "1.0")
-                    limit(counter: "INSTRUCTION", value: "COVEREDRATIO", minimum: "1.0")
-                    limit(counter: "BRANCH", value: "COVEREDRATIO", minimum: "1.0")
-                    limit(counter: "COMPLEXITY", value: "COVEREDRATIO", minimum: "1.0")
-                    limit(counter: "METHOD", value: "COVEREDRATIO", minimum: "1.0")
-                }
-            }
-        }
+jacocoTestCoverageVerification {
+  afterEvaluate {
+    def excludeClasses = (coverage.excludeClasses ?: []).collect {
+      "${it.replaceAll('\\.', '/') + '.class'}"
     }
-}
 
-check.dependsOn "coverageCheck"
+    def excludePackageClasses = (coverage.excludePackages ?: []).collect {
+      "${it.replaceAll('\\.', '/') + '/*'}"
+    }
+
+    def excludes = excludeClasses + excludePackageClasses
+    classDirectories.setFrom(files(classDirectories.files.collect {
+      fileTree(dir: it, exclude: excludes)
+    }))
+
+    test.jacoco.enabled = coverage.enabled
+  }
+
+  violationRules {
+    rule {
+      enabled = coverage.enabled
+      limit {
+        counter = 'LINE'
+        value = 'COVEREDRATIO'
+        minimum = 1.0
+      }
+      limit {
+        counter = 'BRANCH'
+        value = 'COVEREDRATIO'
+        minimum = 1.0
+      }
+      limit {
+        counter = 'CLASS'
+        value = 'COVEREDRATIO'
+        minimum = 1.0
+      }
+      limit {
+        counter = 'INSTRUCTION'
+        value = 'COVEREDRATIO'
+        minimum = 1.0
+      }
+      limit {
+        counter = 'METHOD'
+        value = 'COVEREDRATIO'
+        minimum = 1.0
+      }
+    }
+  }
+}
