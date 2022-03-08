@@ -12,6 +12,7 @@ project.extensions.create('coverage', JacocoExtension)
 
 test.finalizedBy jacocoTestReport
 jacocoTestReport.dependsOn test
+jacocoTestCoverageVerification.dependsOn compileJava, processResources
 check.dependsOn jacocoTestCoverageVerification
 
 jacoco.toolVersion = jacocoVersion
