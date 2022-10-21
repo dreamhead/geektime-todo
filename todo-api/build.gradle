@@ -3,6 +3,7 @@ import org.flywaydb.gradle.task.*
 buildscript {
     dependencies {
         classpath "mysql:mysql-connector-java:$mysqlVersion"
+        classpath "org.flywaydb:flyway-mysql:$flywayMysqlVersion"
     }
 }
 
