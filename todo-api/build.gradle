@@ -2,7 +2,7 @@ import org.flywaydb.gradle.task.*
 
 buildscript {
     dependencies {
-        classpath "mysql:mysql-connector-java:$mysqlVersion"
+        classpath "com.mysql:mysql-connector-j:$mysqlVersion"
         classpath "org.flywaydb:flyway-mysql:$flywayVersion"
     }
 }
@@ -34,7 +34,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter:$springBootVersion")
     implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
-    runtimeOnly("mysql:mysql-connector-java:$mysqlVersion")
+    runtimeOnly("com.mysql:mysql-connector-j:$mysqlVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
     testImplementation("io.cucumber:cucumber-java8:$cucumberVersion")
     testImplementation("io.cucumber:cucumber-junit:$cucumberVersion")
